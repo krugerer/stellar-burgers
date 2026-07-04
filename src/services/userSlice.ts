@@ -11,7 +11,6 @@ import {
 } from '@api';
 import { deleteCookie, setCookie, getCookie } from '../utils/cookie';
 import { getUserApi } from '@api';
-import { error } from 'console';
 
 export const registerUser = createAsyncThunk(
   'user/register',

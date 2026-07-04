@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styles from './app-header.module.css';
 import { TAppHeaderUIProps } from './type';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import {
   BurgerIcon,
   ListIcon,
@@ -43,9 +43,9 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => (
         </NavLink>
       </div>
       <div className={styles.logo}>
-        <NavLink to='/'>
+        <Link to='/'>
           <Logo className='' />
-        </NavLink>
+        </Link>
       </div>
       <div className={styles.link_position_last}>
         <NavLink

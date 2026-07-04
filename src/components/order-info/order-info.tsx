@@ -1,21 +1,43 @@
-import { FC, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { FC, useEffect, useMemo } from 'react';
+import { useParams, useLocation } from 'react-router-dom';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
-import { useSelector } from '../../services/store';
+import { useSelector, useDispatch } from '../../services/store';
+import { fetchUserOrders } from '../../services/userSlice';
+import { fetchFeed } from '../../services/feedSlice';
 
 export const OrderInfo: FC = () => {
   const { number } = useParams<{ number: string }>();
   const { ingredients } = useSelector((state) => state.ingredients);
 
-  const orders = useSelector((state) => state.feed.orders);
-  const orderData = useMemo(() => {
-    if (!number || !orders.length) return null;
-    return orders.find((item) => item.number === Number(number)) || null;
-  }, [number, orders]);
+  const location = useLocation();
+  const dispatch = useDispatch();
 
-  /* Готовим данные для отображения */
+  const feedOrders = useSelector((state) => state.feed.orders);
+  const userOrders = useSelector((state) => state.user.orders || []);
+
+  const orderData = useMemo(() => {
+    if (!number) return null;
+    const orderNumber = Number(number);
+
+    return (
+      feedOrders.find((item) => item.number === orderNumber) ||
+      userOrders.find((item) => item.number === orderNumber) ||
+      null
+    );
+  }, [number, userOrders, feedOrders]);
+
+  useEffect(() => {
+    if (!orderData) {
+      if (location.pathname.includes('/profile')) {
+        dispatch(fetchUserOrders());
+      } else {
+        dispatch(fetchFeed);
+      }
+    }
+  });
+
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
 
