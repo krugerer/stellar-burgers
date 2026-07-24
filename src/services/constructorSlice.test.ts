@@ -6,7 +6,6 @@ import reducer, {
 } from "./constructorSlice";
 
 import { TIngredient } from "@utils-types";
-import { ingredientsSlice } from "./ingredientsSlice";
 
 const bun: TIngredient = {
     _id: '1',
@@ -53,6 +52,17 @@ describe('constructorSlice', () => {
         expect(state.bun?._id).toBe('1');
         expect(state.ingredients).toHaveLength(0);
     });
+
+    test('должен добавить начинку', () => {
+        const state = reducer(
+            undefined,
+            addConstructorIngredient(main)
+        );
+
+        expect(state.ingredients).toHaveLength(1);
+        expect(state.ingredients[0]._id).toBe('2');
+        expect(state.ingredients[0].name).toBe('Котлета');
+    })
 
     test('должен удалить ингредиент', () => {
         let state = reducer(

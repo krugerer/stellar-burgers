@@ -28,15 +28,29 @@ test.describe('E2E Тестирование конструктора бурге�
             const modal = page.locator('[data-testid="modal"]');
             
             await page.locator('[data-testid="ingredient-link"]').first().click();
-
             await expect(modal).toBeVisible();
+
             await expect(
-            page.locator('[data-testid="ingredient-details-name"]')
+                page.locator('[data-testid="ingredient-details-name"]')
             ).toHaveText('Краторная булка N-200i');
 
             await page.locator('[data-testid="modal-close"]').click();
-            await expect(page).toHaveURL('/');
-            await expect(page.locator('[data-testid="ingredient-link"]').first()).toBeVisible();
+            await expect(modal).not.toBeVisible();
+            await expect(modal).not.toBeAttached();
+
+            await page.locator('[data-testid="ingredient-link"]').first().click();
+            await expect(modal).toBeVisible();
+
+            await page.locator('[data-testid="modal-overlay"]').click({
+                position: {
+                    x: 10,
+                    y: 10
+                }
+            });
+            await expect(modal).not.toBeVisible();
+            await expect(modal).not.toBeAttached();
+            // await expect(page).toHaveURL('/');
+            // await expect(page.locator('[data-testid="ingredient-link"]').first()).toBeVisible();
         });
     });
 

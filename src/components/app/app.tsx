@@ -40,7 +40,7 @@ const App = () => {
   const backgroundLocation = location.state?.background;
 
   const handleModalClose = () => {
-    navigate('/');
+    navigate(-1);
   };
 
   if (error) {
